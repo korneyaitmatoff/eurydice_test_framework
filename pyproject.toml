@@ -1,0 +1,7 @@
+[project]
+name = "test_framework"
+#dependencies = ["typer"]
+dynamic = ["version"]
+
+[project.scripts]
+testfw = "test_framework.core.management:command_line_handler"
