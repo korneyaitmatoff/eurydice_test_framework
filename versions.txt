@@ -1,4 +1,10 @@
-[0.0.1]
+[0.0.0]
 Beta version
 features:
 - create folder structure with project and services
+
+[0.0.0]
+Beta version
+bugfix:
+- delete useless libs
+- delete typing

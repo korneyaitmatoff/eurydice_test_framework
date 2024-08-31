@@ -22,7 +22,7 @@ class CommandLineManager:
         command_args: dict[str, str] = {}
 
         command_class = self.__import_class(
-            f"test_framework.core.management.commands.{command}",
+            f"eurydice_test_framework.core.management.commands.{command}",
             f"{command.capitalize().replace('_', '')}Command"
         )
 
