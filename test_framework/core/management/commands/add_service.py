@@ -16,4 +16,11 @@ class AddserviceCommand(BaseCommand):
         for folder in ["api", "test_data", "tests"]:
             DirectoryHandler().create_dir(path=f"{project_name}/{folder}/{service_name}")
 
+            if folder == "tests":
+                open(f"{project_name}/{folder}/{service_name}/test_{service_name}.py", "a").close()
+            if folder == "api":
+                open(f"{project_name}/{folder}/{service_name}/{service_name}.py", "a").close()
+            if folder == "test_data":
+                continue
+
         sys.stdout.write(f"\nService {service_name} was added.\n")
