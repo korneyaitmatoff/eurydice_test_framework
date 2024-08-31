@@ -7,4 +7,6 @@ class DirectoryHandler:
         try:
             mkdir(path)
         except FileExistsError:
-            sys.stdout.write(f"{path} already exists")
+            sys.stdout.write(f"{path} already exists\n")
+        except FileNotFoundError:
+            sys.stdout.write(f"{path} is wrong\nTry again\n")

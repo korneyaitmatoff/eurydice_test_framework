@@ -7,14 +7,14 @@ packages = ["eurydice_test_framework"]
 
 
 [project]
-version = "0.0.1.1"
+version = "0.0.1"
 name = "eurydice_test_framework"
 dependencies = ["pytest"]
 readme = "README.md"
 requires-python = ">=3.11"
 
 [project.scripts]
-eurydice = "eurydice_test_ramework.core.management:command_line_handler"
+eurydice = "eurydice_test_framework.core.management:command_line_handler"
 
 [project.urls]
 Homepage = "https://github.com/korneyaitmatoff/eurydice_test_framework"
