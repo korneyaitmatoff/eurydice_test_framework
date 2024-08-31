@@ -6,7 +6,6 @@ build-backend = "hatchling.build"
 version = "0.0.1"
 name = "test_framework"
 dependencies = ["typer", "pytest"]
-dynamic = ["version"]
 readme = "README.md"
 requires-python = ">=3.11"
 
