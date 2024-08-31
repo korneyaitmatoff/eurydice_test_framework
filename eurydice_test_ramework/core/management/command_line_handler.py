@@ -4,8 +4,6 @@ Module for handle commands and arguments
 import sys
 from importlib import import_module
 
-from typing_extensions import Any
-
 from .commands import BaseCommand
 
 
@@ -21,7 +19,7 @@ class CommandLineManager:
         """Method for parse args to command"""
         command: str = self.args[0]
         args: list[str] = self.args[1:]
-        command_args: dict[str, Any] = {}
+        command_args: dict[str, str] = {}
 
         command_class = self.__import_class(
             f"test_framework.core.management.commands.{command}",
