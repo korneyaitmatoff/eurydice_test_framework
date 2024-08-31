@@ -23,9 +23,11 @@ class CommandLineManager:
         args: list[str] = self.args[1:]
         command_args: dict[str, Any] = {}
 
+
+
         command_class = self.__import_class(
             f"test_framework.core.management.commands.{command}",
-            f"{command.capitalize()}Command"
+            f"{command.capitalize().replace('_', '')}Command"
         )
 
         if len(args) == 0:

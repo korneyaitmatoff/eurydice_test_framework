@@ -1,6 +1,6 @@
 [project]
 name = "test_framework"
-#dependencies = ["typer"]
+dependencies = ["typer", "pytest"]
 dynamic = ["version"]
 
 [project.scripts]
