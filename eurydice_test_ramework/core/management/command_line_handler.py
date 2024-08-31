@@ -23,8 +23,6 @@ class CommandLineManager:
         args: list[str] = self.args[1:]
         command_args: dict[str, Any] = {}
 
-
-
         command_class = self.__import_class(
             f"test_framework.core.management.commands.{command}",
             f"{command.capitalize().replace('_', '')}Command"
@@ -71,5 +69,4 @@ class CommandLineManager:
 
 def command_line_handler():
     """Entrypoint"""
-    print(sys.argv)
     CommandLineManager(args=sys.argv[1:]).execute()

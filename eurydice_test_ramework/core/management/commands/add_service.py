@@ -1,7 +1,7 @@
 import sys
 
-from test_framework.core.management.commands import BaseCommand
-from test_framework.core.management.directory_handler import DirectoryHandler
+from eurydice_test_ramework.core.management.commands import BaseCommand
+from eurydice_test_ramework.core.management.directory_handler import DirectoryHandler
 
 
 class AddserviceCommand(BaseCommand):
