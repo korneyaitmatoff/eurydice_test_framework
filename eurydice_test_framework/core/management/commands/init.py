@@ -1,7 +1,8 @@
 import sys
 
 from eurydice_test_framework.core.management.commands import BaseCommand
-from eurydice_test_framework.core.management.directory_handler import DirectoryHandler
+from eurydice_test_framework.core.management.directory_handler import \
+    DirectoryHandler
 
 
 class InitCommand(BaseCommand):

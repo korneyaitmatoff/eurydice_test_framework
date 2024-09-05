@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=40.0.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.hatch.build.targets.wheel]
@@ -7,9 +7,14 @@ packages = ["eurydice_test_framework"]
 
 
 [project]
-version = "0.0.1"
+version = "0.0.1.5.8"
 name = "eurydice_test_framework"
-dependencies = ["pytest"]
+dependencies = [
+    "numpy",
+    "pytest",
+    "SQLAlchemy",
+    "psycopg2"
+]
 readme = "README.md"
 requires-python = ">=3.11"
 
