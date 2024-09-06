@@ -1,4 +1,4 @@
-from eurydice_test_framework.core.management.commands import BaseCommand
+from eurydice_test_framework.core.management.commands.base_command import BaseCommand
 from eurydice_test_framework.templates import DC_YAML, ENV
 
 

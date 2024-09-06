@@ -7,7 +7,7 @@ packages = ["eurydice_test_framework"]
 
 
 [project]
-version = "0.0.1.5.8"
+version = "0.0.2"
 name = "eurydice_test_framework"
 dependencies = [
     "numpy",
