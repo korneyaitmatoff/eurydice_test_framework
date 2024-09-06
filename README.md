@@ -9,4 +9,5 @@ Build project:\
 Add service:\
 ```eurydice add_service --project_name {project_name} --service_name {service_name}```
 
-Now project in beta. You can suggest the features.
+Now project in beta. You can suggest the features._
+

@@ -3,19 +3,18 @@ Module for handle commands and arguments
 """
 import sys
 from importlib import import_module
-
-from .commands import BaseCommand
+from typing import Any
 
 
 class CommandLineManager:
     def __init__(self, args: list):
         self.args = args
 
-    def __import_class(self, class_path: str, class_name: str) -> BaseCommand:
+    def __import_class(self, class_path: str, class_name: str):
         """Method for dynamic class import"""
         return getattr(import_module(class_path), class_name)()
 
-    def parse_args_to_command(self) -> dict[str, str | dict[str, str] | BaseCommand] | None:
+    def parse_args_to_command(self) -> dict[str, str | dict[str, str] | Any] | None:
         """Method for parse args to command"""
         command: str = self.args[0]
         args: list[str] = self.args[1:]

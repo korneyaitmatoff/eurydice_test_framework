@@ -1,6 +1,7 @@
 from typing import Any
-from requests import Response, request
+
 from loguru import logger
+from requests import Response, request
 
 
 class BaseApi:

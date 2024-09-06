@@ -1,8 +1,9 @@
 import sys
 
-from eurydice_test_framework.core.management.commands import BaseCommand
-from eurydice_test_framework.core.management.directory_handler import DirectoryHandler
-from eurydice_test_framework.templates import test_template, api_template
+from eurydice_test_framework.core.management.commands.base_command import BaseCommand
+from eurydice_test_framework.core.management.directory_handler import \
+    DirectoryHandler
+from eurydice_test_framework.templates import api_template, test_template
 
 
 class AddserviceCommand(BaseCommand):
