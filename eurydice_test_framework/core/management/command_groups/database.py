@@ -1,15 +1,13 @@
-from eurydice_test_framework.core.management.commands.base_command import BaseCommand
+from eurydice_test_framework.core.management.command_groups import BaseGroup
 from eurydice_test_framework.templates import DC_YAML, ENV
 
 
-class InitdbCommand(BaseCommand):
-    help = (
-        "Command for build local database"
-    )
-    command = "init_db"
-    requires = ["user", "password", "database"]
+class DatabaseCommandGroup(BaseGroup):
+    requires = {
+        "init": ["user", "password", "database"]
+    }
 
-    def handle(self, user: str, password: str, database: str):
+    def init_action(self, user: str, password: str, database: str):
         (f := open("docker-compose.yaml", "w")) \
             .write(DC_YAML)
         f.close()

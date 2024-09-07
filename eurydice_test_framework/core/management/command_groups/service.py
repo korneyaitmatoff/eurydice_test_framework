@@ -1,20 +1,17 @@
 import sys
 
-from eurydice_test_framework.core.management.commands.base_command import BaseCommand
+from eurydice_test_framework.core.management.command_groups import BaseGroup
 from eurydice_test_framework.core.management.directory_handler import \
     DirectoryHandler
 from eurydice_test_framework.templates import api_template, test_template
 
 
-class AddserviceCommand(BaseCommand):
-    """Add Service command class"""
-    help = (
-        "Command add service api, tests and test_data thet you will test"
-    )
-    command = "add_service"
-    requires = ["project_name", "service_name"]
+class ServiceCommandGroup(BaseGroup):
+    requires = {
+        "add": ["project-name", "service-name"]
+    }
 
-    def handle(self, project_name: str, service_name: str):
+    def add_action(self, project_name: str, service_name: str):
         try:
             for folder in ["api", "test_data", "tests"]:
                 DirectoryHandler().create_dir(path=f"{project_name}/{folder}/{service_name}")
