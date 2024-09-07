@@ -1,9 +1,23 @@
 """
 Module for handle commands and arguments
 """
-import sys
 from importlib import import_module
+from sys import argv, stdout
 from typing import Any
+
+HELP = (
+    "Hi. Welcome to the Eurydice.\n\n"
+    "It's framework for fast build automation testing environment.\n"
+    "Available commands:\n"
+    "\tproject\n"
+    "\t\tinit --project-name [PROJECT_NAME] — build project directory structure.\n"
+    "\tservice\n"
+    "\t\tadd --project-name [PROJECT_NAME] --service-name [SERVICE_NAME] — add service for testing to the project.\n"
+    # "\t\tremove --project-name [PROJECT_NAME] --service-name [SERVICE_NAME] —  remove service from specific project.\n"
+    "\tdatabase\n"
+    "\t\tinit --user [USER] --password [PASSWORD] --database [DATABASE] — add .env and docker-compose files for "
+    "build pgsql database\n"
+)
 
 
 class CommandLineManager:
@@ -16,54 +30,47 @@ class CommandLineManager:
 
     def parse_args_to_command(self) -> dict[str, str | dict[str, str] | Any] | None:
         """Method for parse args to command"""
-        command: str = self.args[0]
-        args: list[str] = self.args[1:]
-        command_args: dict[str, str] = {}
+        try:
+            group_name = self.args[0]
+            action_name = self.args[1]
+            kw_arguments = self.args[1:]
 
-        command_class = self.__import_class(
-            f"eurydice_test_framework.core.management.commands.{command}",
-            f"{command.capitalize().replace('_', '')}Command"
-        )
+            group_class = self.__import_class(
+                f"eurydice_test_framework.core.management.command_groups.{group_name}",
+                f"{group_name.capitalize()}CommandGroup"
+            )
 
-        if len(args) == 0:
-            sys.stdout.write(f"Requires arguments: {str(command_class.requires)}")
+            props: list[str] = [el for el in kw_arguments if "--" in el]
+            params: list[str] = [el for el in kw_arguments[1:] if "--" not in el]
 
-            return
+            if len(props) != len(params):
+                stdout.write(f"{action_name} need only {group_class.requires[action_name]}\n")
 
-        params: list[str] = args[::2]
-        values: list[str] = args[1::2]
+                return None
+            else:
+                args: dict[str, str] = {}
+                for i, _ in enumerate(props):
+                    args[props[i].replace("--", "").replace("-", "_")] = params[i]
 
-        for param in params:
-            if param.replace("--", "") not in command_class.requires:
-                sys.stdout.write(f"Required params: {command_class.requires}")
-
-                return
-
-        if len(params) != len(values):
-            sys.stdout.write("Something wrong in params, check and try again.")
-
-            return
-
-        for i in range(len(params)):
-            command_args[params[i].replace("--", "")] = values[i]
-
-        return {
-            "command": command,
-            "class": command_class,
-            "args": command_args
-        }
+                return {
+                    "action": action_name,
+                    "group": group_class,
+                    "args": args
+                }
+        except Exception as e:
+            stdout.write(HELP)
 
     def execute(self):
         """Command line manager executor"""
         if len(self.args) == 0 or self.args[0] == "help":
-            sys.stdout.write("help")
+            stdout.write(HELP)
         else:
             if (command := self.parse_args_to_command()) is None:
-                sys.stdout.write("Found problems")
+                stdout.write("Found problems")
             else:
-                command['class'].handle(**command["args"])
+                getattr(command['group'], f"{command['action']}_action")(**command["args"])
 
 
 def command_line_handler():
     """Entrypoint"""
-    CommandLineManager(args=sys.argv[1:]).execute()
+    CommandLineManager(args=argv[1:]).execute()
