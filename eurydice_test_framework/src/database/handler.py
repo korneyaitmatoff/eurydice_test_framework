@@ -1,14 +1,24 @@
+from loguru import logger
 from sqlalchemy import MetaData, create_engine, text
 from sqlalchemy.engine import Result
 from sqlalchemy.orm import (DeclarativeMeta, Query, Session, create_session,
                             declarative_base)
+
+from eurydice_test_framework.core.database.tables import Base
 
 
 class DatabaseHandler:
     """Database class handler, which using context manager for make session"""
     session: Session
 
-    def __init__(self, user: str, password: str, host: str, port: str, database: str, dialect: str = 'postgresql'):
+    def __init__(
+            self,
+            user: str = "user",
+            password: str = "password",
+            host: str = "localhost",
+            port: str = "5432",
+            database: str = "database",
+            dialect: str = 'postgresql'):
         self.url = f"{dialect}://{user}:{password}@{host}:{port}/{database}"
         self.engine = create_engine(
             url=self.url,
@@ -28,9 +38,13 @@ class DatabaseHandler:
         """Method for select rows from table with using filters"""
         return self.session.query(table).filter(*filters)
 
-    def insert(self, table: DeclarativeMeta, filters=()) -> None:
+    def insert(self, table: DeclarativeMeta, data: dict) -> None:
         """Method for insert data into table"""
-        self.session.query(table).filter(*filters)
+        new_data = table(**data)
+
+        self.session.add(new_data)
+        self.session.commit()
+        self.session.refresh(new_data)
 
     def update(self, table: DeclarativeMeta, data: dict, filters=()) -> None:
         """Method for update rows in the table"""
@@ -70,3 +84,9 @@ class DatabaseHandler:
             return table_class
         else:
             raise Exception(f"Table {table_name} not found!\n")
+
+    def create_meta_tables(self):
+        """Method for create declarative base tables"""
+        Base.metadata.create_all(self.engine)
+
+        logger.debug("Tables was created.")

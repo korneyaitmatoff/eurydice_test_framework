@@ -2,8 +2,10 @@
 Module for handle commands and arguments
 """
 from importlib import import_module
-from sys import argv, stdout
+from sys import argv
 from typing import Any
+
+from loguru import logger
 
 HELP = (
     "Hi. Welcome to the Eurydice.\n\n"
@@ -17,6 +19,8 @@ HELP = (
     "\tdatabase\n"
     "\t\tinit --user [USER] --password [PASSWORD] --database [DATABASE] — add .env and docker-compose files for "
     "build pgsql database\n"
+    "\ttests\n"
+    "\t\trun --mark [MARK] — run test. Use mark \"all\" for run all tests.\n"
 )
 
 
@@ -30,43 +34,41 @@ class CommandLineManager:
 
     def parse_args_to_command(self) -> dict[str, str | dict[str, str] | Any] | None:
         """Method for parse args to command"""
-        try:
-            group_name = self.args[0]
-            action_name = self.args[1]
-            kw_arguments = self.args[1:]
+        group_name = self.args[0]
+        action_name = self.args[1]
+        kw_arguments = self.args[1:]
 
-            group_class = self.__import_class(
-                f"eurydice_test_framework.core.management.command_groups.{group_name}",
-                f"{group_name.capitalize()}CommandGroup"
-            )
+        group_class = self.__import_class(
+            f"eurydice_test_framework.core.management.command_groups.{group_name}",
+            f"{group_name.capitalize()}CommandGroup"
+        )
 
-            props: list[str] = [el for el in kw_arguments if "--" in el]
-            params: list[str] = [el for el in kw_arguments[1:] if "--" not in el]
+        props: list[str] = [el for el in kw_arguments if "--" in el]
+        params: list[str] = [el for el in kw_arguments[1:] if "--" not in el]
 
-            if len(props) != len(params):
-                stdout.write(f"{action_name} need only {group_class.requires[action_name]}\n")
+        if len(props) != len(params) or len(props) != len(group_class.requires[action_name]):
+            logger.debug(f"{action_name} need only {group_class.requires[action_name]}\n")
 
-                return None
-            else:
-                args: dict[str, str] = {}
-                for i, _ in enumerate(props):
-                    args[props[i].replace("--", "").replace("-", "_")] = params[i]
+            return None
+        else:
+            args: dict[str, str] = {}
+            for i, _ in enumerate(props):
+                args[props[i].replace("--", "").replace("-", "_")] = params[i]
 
-                return {
-                    "action": action_name,
-                    "group": group_class,
-                    "args": args
-                }
-        except Exception as e:
-            stdout.write(HELP)
+            return {
+                "action": action_name,
+                "group": group_class,
+                "args": args
+            }
+
 
     def execute(self):
         """Command line manager executor"""
         if len(self.args) == 0 or self.args[0] == "help":
-            stdout.write(HELP)
+            logger.info(HELP)
         else:
             if (command := self.parse_args_to_command()) is None:
-                stdout.write("Found problems")
+                logger.error("Found problems")
             else:
                 getattr(command['group'], f"{command['action']}_action")(**command["args"])
 
