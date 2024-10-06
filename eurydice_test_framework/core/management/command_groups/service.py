@@ -3,15 +3,19 @@ import sys
 from eurydice_test_framework.core.management.command_groups import BaseGroup
 from eurydice_test_framework.core.management.directory_handler import \
     DirectoryHandler
+from eurydice_test_framework.src.config import get_yaml_config
 from eurydice_test_framework.templates import api_template, test_template
 
 
 class ServiceCommandGroup(BaseGroup):
     requires = {
-        "add": ["project-name", "service-name"]
+        "add": ["service-name"]
     }
 
-    def add_action(self, project_name: str, service_name: str):
+    def add_action(self, service_name: str):
+        """Method for add service to project"""
+        project_name = get_yaml_config()['project']['name']
+
         try:
             for folder in ["api", "test_data", "tests"]:
                 DirectoryHandler().create_dir(path=f"{project_name}/{folder}/{service_name}")

@@ -1,3 +1,5 @@
+from loguru import logger
+
 from eurydice_test_framework.core.management.command_groups import BaseGroup
 from eurydice_test_framework.core.management.tests_handler import run_tests
 from eurydice_test_framework.src.database.handler import DatabaseHandler
@@ -31,3 +33,5 @@ class TestsCommandGroup(BaseGroup):
                 )
 
         container.stop()
+
+        logger.debug(f"{config['project']['name']}_database was stopped.")

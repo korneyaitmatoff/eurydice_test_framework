@@ -14,13 +14,15 @@ HELP = (
     "\tproject\n"
     "\t\tinit --project-name [PROJECT_NAME] — build project directory structure.\n"
     "\tservice\n"
-    "\t\tadd --project-name [PROJECT_NAME] --service-name [SERVICE_NAME] — add service for testing to the project.\n"
+    "\t\tadd --service-name [SERVICE_NAME] — add service for testing to the project.\n"
     # "\t\tremove --project-name [PROJECT_NAME] --service-name [SERVICE_NAME] —  remove service from specific project.\n"
     "\tdatabase\n"
     "\t\tinit --user [USER] --password [PASSWORD] --database [DATABASE] — add .env and docker-compose files for "
     "build pgsql database\n"
     "\ttests\n"
     "\t\trun --mark [MARK] — run test. Use mark \"all\" for run all tests.\n"
+    "\treport\n"
+    "\t\trun — use for run report dashboard.\n"
 )
 
 
